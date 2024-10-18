@@ -68,10 +68,6 @@ const choices = Object.entries(groupedEnvs).flatMap(([group, entries]) => {
   ];
 });
 
-async function preStart() {
-  await spawn("pnpm", ["generate-client"], { stdio: "inherit" });
-}
-
 async function main() {
   try {
     const options = optionator.parse(process.argv);
@@ -99,8 +95,6 @@ async function main() {
         `pnpm start ${!!options.preview ? "--preview " : ""}${selectedEnv}`
       )} to run against this environment without a select prompt.`
     );
-
-    await preStart();
 
     if (options.preview) {
       console.log(`\n> pnpm vite build && pnpm vite preview --port ${env.cloudEnv ? "3001" : "3000"}\n`);

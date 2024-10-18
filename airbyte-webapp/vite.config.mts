@@ -15,7 +15,6 @@ import {
   docMiddleware,
   environmentVariables,
   experimentOverwrites,
-  generateIntents,
   preloadTags,
 } from "./packages/vite-plugins";
 
@@ -26,7 +25,6 @@ export default defineConfig(() => {
       basicSsl(),
       react(),
       buildInfo(),
-      generateIntents(),
       compileFormatJsMessages(),
       viteTsconfigPaths({ ignoreConfigErrors: true }),
       viteYaml(),

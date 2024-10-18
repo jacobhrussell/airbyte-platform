@@ -1,3 +1,0 @@
-logger:
-  levels:
-    io.micronaut.data.query: TRACE

@@ -1,4 +1,0 @@
-# Uncomment to see generated SQL in test output
-# logger:
-#   levels:
-#     io.micronaut.data.query: TRACE

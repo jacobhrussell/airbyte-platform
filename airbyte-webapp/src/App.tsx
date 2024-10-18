@@ -5,14 +5,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { DevToolsToggle } from "components/DevToolsToggle";
 
 import { QueryProvider, useGetInstanceConfiguration } from "core/api";
-import {
-  InstanceConfigurationResponseEdition,
-  InstanceConfigurationResponseTrackingStrategy,
-} from "core/api/types/AirbyteClient";
 import { DefaultErrorBoundary } from "core/errors";
-import { AnalyticsProvider } from "core/services/analytics";
 import { OSSAuthService } from "core/services/auth";
-import { defaultOssFeatures, defaultEnterpriseFeatures, FeatureService } from "core/services/features";
+import { defaultOssFeatures, FeatureService } from "core/services/features";
 import { I18nProvider } from "core/services/i18n";
 import { BlockerService } from "core/services/navigation";
 import { isDevelopment } from "core/utils/isDevelopment";
@@ -27,29 +22,22 @@ import { Routing } from "./pages/routes";
 
 const Services: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const instanceConfig = useGetInstanceConfiguration();
-  const instanceFeatures =
-    instanceConfig.edition === InstanceConfigurationResponseEdition.community
-      ? defaultOssFeatures
-      : defaultEnterpriseFeatures;
+  const instanceFeatures = defaultOssFeatures;
 
   return (
-    <AnalyticsProvider
-      disableSegment={instanceConfig.trackingStrategy !== InstanceConfigurationResponseTrackingStrategy.segment}
-    >
-      <FeatureService features={instanceFeatures} instanceConfig={instanceConfig}>
-        <NotificationService>
-          <OSSAuthService>
-            <ConfirmationModalService>
-              <ModalServiceProvider>
-                <FormChangeTrackerService>
-                  <HelmetProvider>{children}</HelmetProvider>
-                </FormChangeTrackerService>
-              </ModalServiceProvider>
-            </ConfirmationModalService>
-          </OSSAuthService>
-        </NotificationService>
-      </FeatureService>
-    </AnalyticsProvider>
+    <FeatureService features={instanceFeatures} instanceConfig={instanceConfig}>
+      <NotificationService>
+        <OSSAuthService>
+          <ConfirmationModalService>
+            <ModalServiceProvider>
+              <FormChangeTrackerService>
+                <HelmetProvider>{children}</HelmetProvider>
+              </FormChangeTrackerService>
+            </ModalServiceProvider>
+          </ConfirmationModalService>
+        </OSSAuthService>
+      </NotificationService>
+    </FeatureService>
   );
 };
 
